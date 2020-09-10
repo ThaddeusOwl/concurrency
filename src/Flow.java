@@ -49,7 +49,13 @@ public class Flow {
 				frame.dispose();
 			}
 		});
-		
+		JButton playB = new JButton("Play");
+		JButton pauseB = new JButton("Pause");
+		JButton resetB = new JButton("Reset");
+
+		b.add(resetB);
+		b.add(pauseB);
+		b.add(playB);
 		b.add(endB);
 		g.add(b);
     	
