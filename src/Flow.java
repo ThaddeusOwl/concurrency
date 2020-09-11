@@ -1,11 +1,10 @@
 //package FlowSkeleton;
 
 import javax.swing.*;
-
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.BorderLayout;
+
 
 public class Flow {
 	static long startTime = 0;
@@ -23,7 +22,7 @@ public class Flow {
 		return (System.currentTimeMillis() - startTime) / 1000.0f; 
 	}
 	
-	public static void setupGUI(int frameX,int frameY,Terrain landdata) {
+	public static void setupGUI(int frameX,int frameY,Terrain landdata, Water water) {
 		
 		Dimension fsize = new Dimension(800, 800);
     	JFrame frame = new JFrame("Waterflow"); 
@@ -33,11 +32,22 @@ public class Flow {
       	JPanel g = new JPanel();
         g.setLayout(new BoxLayout(g, BoxLayout.PAGE_AXIS)); 
    
-		fp = new FlowPanel(landdata);
+		fp = new FlowPanel(landdata, water);
 		fp.setPreferredSize(new Dimension(frameX,frameY));
 		g.add(fp);
 	    
 		// to do: add a MouseListener, buttons and ActionListeners on those buttons
+		fp.addMouseListener(new MouseListener() {
+
+			public void mouseClicked(MouseEvent e) {
+				water.fill(e.getX(), e.getY(), (float) 0.01);
+				fp.refresh();
+			}
+			public void mousePressed(MouseEvent e) { }
+			public void mouseReleased(MouseEvent e) { }
+			public void mouseEntered(MouseEvent e) { }
+			public void mouseExited(MouseEvent e) { }
+		});
 	   	
 		JPanel b = new JPanel();
 	    b.setLayout(new BoxLayout(b, BoxLayout.LINE_AXIS));
@@ -66,11 +76,14 @@ public class Flow {
         frame.setVisible(true);
         Thread fpt = new Thread(fp);
         fpt.start();
+
+
 	}
 	
 		
 	public static void main(String[] args) {
 		Terrain landdata = new Terrain();
+
 		
 		// check that number of command line arguments is correct
 		if(args.length != 1)
@@ -85,7 +98,9 @@ public class Flow {
 		
 		frameX = landdata.getDimX();
 		frameY = landdata.getDimY();
-		SwingUtilities.invokeLater(()->setupGUI(frameX, frameY, landdata));
+		Water water = new Water(frameX,frameY);
+
+		SwingUtilities.invokeLater(()->setupGUI(frameX, frameY, landdata, water));
 		
 		// to do: initialise and start simulation
 	}
