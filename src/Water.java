@@ -12,7 +12,12 @@ public class Water {
     BufferedImage img; // image for displaying the water top-down
     //float[][] landdata;
     float[][] total;
-    Color col1 = new Color(0,0,255);
+
+    Color col0 = new Color(30,144,255); //Dodger Blue
+    Color col1 = new Color(0,0,255); //Blue
+    Color col2 = new Color(0,0,205); //Medium Blue
+    Color col3 = new Color(0,0,139); //Dark Blue
+    Color col4 = new Color(25, 25, 112); //Midnight Blue
     float unit = 0.01f;
 
     /**Constructor takes in x and y dimensions and a terrain array*/
@@ -70,22 +75,18 @@ public class Water {
         return img;
     }
 
-    /** Fill a given location with given water depth*/
+    /** Fill a given location with given water depth and set colour according to depth*/
     public synchronized void fill(int x, int y, float depth){
         depths[x][y] = depths[x][y] + depth;
         total[x][y] = total[x][y] + depth;
-        img.setRGB(x, y, col1.getRGB());
-    }
+        //Color col1 = new Color(0,0,260-(depths[x][y]));
+        if(depths[x][y] >= 0.05f){img.setRGB(x, y, col4.getRGB());}
+        else if(depths[x][y] >= 0.04f){img.setRGB(x, y, col3.getRGB());}
+        else if(depths[x][y] >= 0.03f){img.setRGB(x, y, col2.getRGB());}
+        else if(depths[x][y] >= 0.02f ){img.setRGB(x, y, col1.getRGB());}
+        else{img.setRGB(x, y, col0.getRGB());}
 
-    /*public int countWater(){
-        int waterUnits = 0;
-        for(int i = 0; i < depths.length; i++){
-            for(int j = 0; j < depths[0].length; j++){
-                waterUnits = waterUnits + (int)(depths[i][j]*100);
-            }
-        }
-        return Flow.countWaterUnits.addAndGet(waterUnits);
-    }*/
+    }
 
     /**Find the neighbour with the minimum combined terrain and water height*/
     public synchronized int[] getMin(int x, int y){

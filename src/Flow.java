@@ -68,13 +68,6 @@ public class Flow {
 		JPanel b = new JPanel();
 	    b.setLayout(new BoxLayout(b, BoxLayout.LINE_AXIS));
 
-	    /*JButton countWater = new JButton("Count Water");
-	    countWater.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(water.countWater());
-			}
-		});*/
 
 	    JButton endB = new JButton("End");;
 		endB.addActionListener(new ActionListener(){
